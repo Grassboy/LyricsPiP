@@ -143,7 +143,8 @@
         attachKKBOX: function(){
             var that = this;
             var lines = document.querySelectorAll('[data-lyrics-line]');
-            var song_name = document.querySelectorAll('[href^="/track/"][title]')[0].textContent;
+            var song_name = document.querySelectorAll('[href^="/track/"][title]');
+            song_name = song_name && song_name[0] && song_name[0].textContent;
             var checkEmpty = (function(){
                 var timer = null;
                 return function(){
