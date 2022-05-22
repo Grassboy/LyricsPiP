@@ -62,6 +62,31 @@
         that.video.style = "width: 24px;height: 24px;background: black;";
         that.video.width = that.canvas.width = opts.width || 800;
         that.video.height = that.canvas.height = opts.height || 200;
+        that._video_pause_timer = null;
+        that.video.addEventListener('pause', function(e){
+            if(!that.wait_play) {
+                var btn = document.querySelector('.k-icon-now_playing-pause'); 
+                btn && btn.click();
+                var prev_index = that.current_focus_index;
+                that.focusLyrics(0);
+                that.video.play();
+                that.wait_play = false;
+                setTimeout(function(){
+                    that.wait_play = true;
+                    that.video.pause();
+                }, 500);
+                that._video_pause_timer = setTimeout(function(){
+                    that.focusLyrics(prev_index);
+                }, 2000);
+            }
+        });
+        that.video.addEventListener('play', function(){
+            if(that.wait_play) {
+                var btn = document.querySelector('.k-icon-now_playing-play'); 
+                btn && btn.click();
+                that.wait_play = false;
+            }
+        });
         parentNode.appendChild(that.video);
 
         that.font_size = opts.font_size || 24;
