@@ -180,7 +180,8 @@
             });
             that.song_change = new MutationObserver(function (mutations) {
                 that.clearLyrics();
-                setTimeout(function(){
+                clearTimeout(that._reattach_timer);
+                that._reattach_timer = setTimeout(function(){
                     that.attachKKBOX();
                 }, 1000);
             });
@@ -191,8 +192,15 @@
                 that.addLyrics(line.textContent);
                 that.lyrics_change.observe(line, {attributes: true});
             });
+            that.song_change.observe(document.querySelectorAll('.k-icon-now_playing-listen_with')[0], {
+                attributes: true,
+                childList: true,
+                subtree: true
+            });
             that.song_change.observe(document.querySelectorAll('[href^="/track/"][title]')[0], {
-                attributes: true
+                attributes: true,
+                childList: true,
+                subtree: true
             });
         },
         clearLyrics: function(){
